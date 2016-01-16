@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/arrays.xml -->
+    <eat-comment/>
+    <string-array name="listArray"/>
+    <string-array name="listValues"/>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="TransparentGrey">#7F000000</color>
+    <color name="White">#FFFFFF</color>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="black_overlay">#66000000</color>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="butto_greenn_focused_color_end">#79C83F</color>
+    <color name="butto_greenn_pressed_color_end">#619be9</color>
+    <color name="button_focused_color_end">#79C83F</color>
+    <color name="button_focused_color_start">#7FA40E</color>
+    <color name="button_green_focused_color_start">#7FA40E</color>
+    <color name="button_green_normal_color_center">#79b83f</color>
+    <color name="button_green_normal_color_end">#79C83F</color>
+    <color name="button_green_normal_color_start">#7FA40E</color>
+    <color name="button_green_pressed_color_start">#1f71df</color>
+    <color name="button_normal_color_center">#6096e9</color>
+    <color name="button_normal_color_end">#619be9</color>
+    <color name="button_normal_color_start">#1f71df</color>
+    <color name="button_pressed_color_end">#79C83F</color>
+    <color name="button_pressed_color_start">#7FA40E</color>
+    <declare-styleable name="ButtonBarContainerTheme"><attr format="reference" name="buttonBarStyle"/><attr format="reference" name="buttonBarButtonStyle"/></declare-styleable>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="_">Пятнашки</string>
+    <string name="_1">1</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">Пятнашки анимация</string>
+    <string name="button">Button</string>
+    <string name="description">Пятнашки анимация</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="exit">Выход</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="play">Играть</string>
+    <string name="setting">Настройки</string>
+    <string name="title_activity_records">Records</string>
+    <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        --><item name="android:background">@drawable/background</item>
+    </style>
+    <style name="AppTheme" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:buttonStyle">@style/ButtonTheme</item>
+        
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+    <style name="ButtonBarButton"/>
+    <style name="ButtonPyatnashka" parent="@style/StyleButtonPyatnashka">
+        <item name="android:background">#ADD8E6</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:lines">1</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+    <style name="ButtonTheme" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_blue</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:shadowColor">@color/TransparentGrey</item>
+        <item name="android:shadowDx">8</item>
+        <item name="android:shadowDy">-5</item>
+        <item name="android:shadowRadius">1.5</item>
+        <item name="android:lines">1</item>
+        <item name="android:width">40dp</item>
+        <item name="android:height">90dp</item>
+    </style>
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+    <style name="StyleButtonPyatnashka">1</style>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Пятнашки анимация</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="button">Button</string>
+    <string name="_1">1</string>
+    <string name="play">Играть</string>
+    <string name="setting">Настройки</string>
+    <string name="exit">Выход</string>
+    <string name="title_activity_records">Records</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="description">Пятнашки анимация</string>
+    <string name="_">Пятнашки</string>
+
+</resources>

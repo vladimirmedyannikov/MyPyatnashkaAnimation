@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        --><item name="android:background">@drawable/background</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:buttonStyle">@style/ButtonTheme</item>
+        
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="StyleButtonPyatnashka">1</style>
+
+    <style name="ButtonPyatnashka" parent="@style/StyleButtonPyatnashka">
+        <item name="android:background">#ADD8E6</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:lines">1</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="ButtonTheme" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_blue</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:shadowColor">@color/TransparentGrey</item>
+        <item name="android:shadowDx">8</item>
+        <item name="android:shadowDy">-5</item>
+        <item name="android:shadowRadius">1.5</item>
+        <item name="android:lines">1</item>
+        <item name="android:width">40dp</item>
+        <item name="android:height">90dp</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="ButtonBarButton" />
+
+</resources>
