@@ -7,4 +7,4 @@
      android:interpolator="@android:anim/accelerate_interpolator"  
      android:toAlpha="1.0" />  
 
- </set>  <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/anim/zoom_in.xml -->
+ </set>  

@@ -14,5 +14,20 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="description">Пятнашки анимация</string>
     <string name="_">Пятнашки</string>
+    <string name="setting_animation_label">Время анимации:</string>
+    <string name="cancel">Отмена</string>
+    <string name="setting_vibration_label">Вибрация при нажатии:</string>
+    <string-array name="animation_settings">
+        <item>0</item>
+        <item>0.2 сек</item>
+        <item>0.5 сек</item>
+        <item>0.8 сек</item>
+        <item>1 сек</item>
+        <item>1.2 сек</item>
+    </string-array>
 
+    <string-array name="chooser_on_off">
+        <item>Включено</item>
+        <item>Выключено</item>
+    </string-array>
 </resources>

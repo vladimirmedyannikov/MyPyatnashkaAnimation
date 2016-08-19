@@ -22,4 +22,4 @@
         android:background="@color/black_overlay"
         android:text="Records" />
 
-</LinearLayout> <!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/layout/activity_records.xml -->
+</LinearLayout> 

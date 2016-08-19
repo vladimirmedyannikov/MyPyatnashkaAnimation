@@ -11,4 +11,4 @@
        android:repeatMode="reverse"
        android:repeatCount="infinite"
         />
-</set><!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/anim/rotaterecords.xml -->
+</set>

@@ -44,4 +44,4 @@
                 android:summary="This works almost like a button"
                 android:key="customPref" />
         </PreferenceCategory>
-</PreferenceScreen><!-- From: file:/C:/Users/Vladimir/AndroidStudioProjects/MyPyatnashkaAnimation/app/src/main/res/layout/preferences.xml -->
+</PreferenceScreen>
