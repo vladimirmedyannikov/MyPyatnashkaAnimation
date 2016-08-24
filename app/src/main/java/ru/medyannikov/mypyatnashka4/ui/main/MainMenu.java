@@ -1,8 +1,6 @@
 package ru.medyannikov.mypyatnashka4.ui.main;
 
-import ru.medyannikov.mypyatnashka4.*;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.DialogPreference;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,12 +18,14 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
+import ru.medyannikov.mypyatnashka4.R;
 import ru.medyannikov.mypyatnashka4.data.services.MusicService;
+import ru.medyannikov.mypyatnashka4.ui.base.BaseActivity;
 import ru.medyannikov.mypyatnashka4.ui.game.GameActivity;
 import ru.medyannikov.mypyatnashka4.ui.record.RecordsActivity;
-import ru.medyannikov.mypyatnashka4.ui.settings.SettingDialog;
 
-public class MainMenu extends Activity {
+
+public class MainMenu extends BaseActivity {
 
 	@Override
 
@@ -142,18 +141,18 @@ public class MainMenu extends Activity {
 		play.startAnimation(animRotate2);
 		setting.startAnimation(animRotate);
 
-		setting.setOnClickListener(new OnClickListener() {
+		/*setting.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				/*Intent settingsActivity = new Intent(getBaseContext(),
+				*//*Intent settingsActivity = new Intent(getBaseContext(),
                         Preferences.class);
-                     startActivity(settingsActivity);*/
+                     startActivity(settingsActivity);*//*
 				v.startAnimation(animRotate3);
 				DialogPreference dp = new SettingDialog(getApplication(), null);
 
 			}
-		});
+		});*/
 
 
 		AnimationListener animListener = new AnimationListener() {

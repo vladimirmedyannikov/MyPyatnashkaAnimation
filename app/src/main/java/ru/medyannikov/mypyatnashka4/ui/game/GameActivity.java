@@ -14,17 +14,16 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.GridLayout;
-import android.widget.GridLayout.Spec;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -36,9 +35,11 @@ import ru.medyannikov.mypyatnashka4.data.db.RecordsDataSource;
 import ru.medyannikov.mypyatnashka4.data.services.MusicService;
 import ru.medyannikov.mypyatnashka4.ui.base.BaseActivity;
 import ru.medyannikov.mypyatnashka4.ui.base.ButtonPyatnashka;
+import ru.medyannikov.mypyatnashka4.ui.settings.SettingDialog;
 import ru.medyannikov.mypyatnashka4.ui.winner.Winner;
 
 public class GameActivity extends BaseActivity<GamePresenter> implements GameView {
+  TextView countClickText;
   private int countClick = 0;
   private int[][] numbers;
   private int sizeX = 4, sizeY = 4;
@@ -55,6 +56,7 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
   int timeAnimation = 2, theme = 2;
   Button bMenu;
   private MusicService mServ;
+
   private boolean mIsBound;
 
   private GameManager gameManager;
@@ -65,30 +67,123 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    gameManager = new GameManager(this);
+    initGameScene();
+    initPresenter();
+  }
+
+  private void initPresenter() {
     presenter = new GamePresenter();
     presenter.attachView(this);
+    presenter.init();
+    presenter.startGame();
+  }
 
-    gameManager = new GameManager(this);
+  private void initGameScene() {
     gr = (GridLayout) findViewById(R.id.GridLayout1);
-    gr.setRowCount(getSizeX());
+    gr.setRowCount(sizeX);
     gr.setColumnCount(getSizeY());
     countClickText = (TextView) findViewById(R.id.countclick);
-
     vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     countClick = 0;
     numbers = new int[sizeX][sizeY];
-    items = new int[getSizeX() * getSizeY()];
-    init();
+    items = new int[sizeX * getSizeY()];
     bMenu = (Button) findViewById(R.id.menu);
-    bMenu.setOnClickListener(v -> openOptionsMenu());
+    bMenu.setOnClickListener(v ->
+        startActivity(new Intent(this, SettingDialog.class
+        )));
     tx = new TextView(getApplication());
     tx.setText("");
+  }
+
+  @Override public void showScore(String s) {
+
+  }
+
+  @Override public void initGameScene(int[] items) {
+    gr.removeAllViews();
+
+    Point size = new Point();
+    getWindowManager().getDefaultDisplay().getSize(size);
+    int screenWidth = size.x;
+    int screenHeight = size.y;
+
+    int quarterScreenWidth;//-15
+    quarterScreenWidth = (screenWidth / sizeX) - (sizeX);
+
+    TableLayout tl = (TableLayout) findViewById(R.id.TableLayout1);
+    screenHeight = screenHeight - tl.getHeight();
+
+    GridLayout gridLayout = gr;
+    gridLayout.setColumnCount(sizeX);
+    gridLayout.setRowCount(sizeY);
+
+    try {
+      int row = 0;
+      int col = 0;
+      for (int i = 0; i < items.length; i++) {
+        Log.d("item ", String.valueOf(i));
+
+        GridLayout.Spec rowPlace = GridLayout.spec(row);
+        GridLayout.Spec colPlace = GridLayout.spec(col++);
+        ButtonPyatnashka b = new ButtonPyatnashka(this);
+
+        GridLayout.LayoutParams place = new GridLayout.LayoutParams(rowPlace, colPlace);
+        place.width = quarterScreenWidth - 7;
+        place.height = quarterScreenWidth - 6;
+        place.setMargins(3, 3, 3, 3);
+        b.setLayoutParams(place);
+        b.number = items[i];
+        switch (theme) {
+          case 0: {
+            b.setBackgroundResource(R.drawable.button_blue);
+            b.setText(String.valueOf(b.number));
+            break;
+          }
+          case 1: {
+            b.setBackgroundResource(R.drawable.button_green);
+            b.setText(String.valueOf(b.number));
+            break;
+          }
+          case 2: {
+            buttonImage(b);
+            break;
+          }
+          default: {
+            b.setBackgroundResource(R.drawable.button_blue);
+            b.setText(String.valueOf(b.number));
+            break;
+          }
+        }
+        b.setOnClickListener(view ->  presenter.onClickButton(b));
+
+        if (items[i] == 0) {
+          b.setVisibility(Button.INVISIBLE);
+          butNil = b;
+        }
+        gridLayout.addView(b, place);
+        if ((i + 1) % sizeX == 0) {
+          row++;
+          col = 0;
+          Log.d("perenos", "true");
+        }
+      }
+    } catch (Exception e) {
+      //Log.e("Errror mother fucker", e.toString());
+    }
+    initTimer();
+  }
+
+  private void initTimer() {
+    chronometer = (Chronometer) findViewById(R.id.chronometer2);
+    chronometer.setBase(SystemClock.elapsedRealtime());
+    chronometer.start();
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.newGame: {
-        init();
+        presenter.startGame();
         return true;
       }
 
@@ -171,55 +266,11 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
     }
   }
 
-  void itemShaffle(ButtonPyatnashka but2) {
-
-    int thisI = 0, thisJ = 0, change = but2.number;
-    for (int i = 0; i < getSizeX(); i++) {
-      for (int j = 0; j < getSizeY(); j++) {
-        if (numbers[i][j] == change) {
-          thisI = i;
-          thisJ = j;
-        }
-      }
-    }
-    if (but2.getAnimate()) {
-      if (thisI > 0) {
-        if (numbers[thisI - 1][thisJ] == 0) {
-          numbers[thisI - 1][thisJ] = change;
-          numbers[thisI][thisJ] = 0;
-
-          animationChange(butNil, but2);
-        }
-      }
-
-      if (thisI < getSizeX() - 1) {
-        if (numbers[thisI + 1][thisJ] == 0) {
-          numbers[thisI + 1][thisJ] = change;
-          numbers[thisI][thisJ] = 0;
-          animationChange(butNil, but2);
-        }
-      }
-      if (thisJ > 0) {
-        if (numbers[thisI][thisJ - 1] == 0) {
-          numbers[thisI][thisJ - 1] = change;
-          numbers[thisI][thisJ] = 0;
-          animationChange(butNil, but2);
-        }
-      }
-      if (thisJ < getSizeY() - 1) {
-        if (numbers[thisI][thisJ + 1] == 0) {
-          numbers[thisI][thisJ + 1] = change;
-          numbers[thisI][thisJ] = 0;
-          animationChange(butNil, but2);
-        }
-      }
-    }
-  }
   public synchronized void animationChange(final ButtonPyatnashka butNil2, final ButtonPyatnashka but) {
     try {
       if (but.getAnimate()) {
         AsyncTask<Void, Float, Boolean> myAsk = new AsyncTask<Void, Float, Boolean>() {
-          final float x = butNil2.getX(), y = butNil2.getY(), x1 = but.getX(), y1 = but.getY();
+          final float x = butNil.getX(), y = butNil.getY(), x1 = but.getX(), y1 = but.getY();
           ButtonPyatnashka butClick;
           boolean changeElem = false;
           TranslateAnimation animTranslate;
@@ -229,13 +280,8 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
 
           @Override protected void onPreExecute() {
             super.onPreExecute();
-            butNil = butNil2;
+            //butNil = butNil2;
             butClick = but;
-
-            // butNil.setX(x1);
-            // butNil.setY(y1);
-            // Process.setThreadPriority(Thread.MAX_PRIORITY);
-            // //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
           }
 
           @Override protected Boolean doInBackground(Void... params) {
@@ -245,14 +291,11 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
 
           @Override protected void onProgressUpdate(Float... values) {
             super.onProgressUpdate(values);
-
             but.setVisibility(Button.INVISIBLE);
-
             butNil.setX(x1);
             butNil.setY(y1);
             but.setX(x);
             but.setY(y);
-
             animTranslate =
                 new TranslateAnimation(Animation.ZORDER_NORMAL, values[0] - values[1], Animation.ZORDER_NORMAL, 0,
                     Animation.ZORDER_NORMAL, values[2] - values[3], Animation.ZORDER_NORMAL, 0);
@@ -356,32 +399,14 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
     }
   }
 
-  public class classBut implements OnClickListener {
-
-    private ButtonPyatnashka but;
-    public classBut(ButtonPyatnashka b) {
-      but = b;
-    }
-
-    @Override public void onClick(View v) {
-      Thread t = new Thread(new Runnable() {
-        @Override public synchronized void run() {
-          itemShaffle(but);
-          Log.d("Button ", but.getText() + " " + but.getAnimate());
-        }
-      });
-      t.start();
-    }
-
-  }
   private boolean checkWin() {
     boolean res = true;
-    for (int i = 0; i < getSizeX(); i++) {
+    for (int i = 0; i < sizeX; i++) {
       for (int j = 0; j < getSizeY(); j++) {
-        if (i == getSizeX() - 1 && j > (getSizeY() - 2)) {
+        if (i == sizeX - 1 && j > (getSizeY() - 2)) {
           break;
         }
-        if (numbers[i][j] != i * getSizeX() + j + 1) {
+        if (numbers[i][j] != i * sizeX + j + 1) {
           res = false;
           break;
         }
@@ -392,127 +417,10 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
 
   private static Random generator = new Random();
 
-  public int getSizeX() {
-    return sizeX;
-  }
-
   public int getSizeY() {
     return sizeY;
   }
 
-  private static void swap(int[] a, int i, int change) {
-    int temp = a[i];
-    a[i] = a[change];
-    a[change] = temp;
-  }
-
-  public static void shuffleArray(int[] a) {
-    int n = a.length;
-    for (int i = 0; i < n; i++) {
-      int change = i + generator.nextInt(n - i);
-      swap(a, i, change);
-    }
-  }
-
-  TextView countClickText;
-
-  public void init() {
-    countClick = 0;
-    countClickText.setText("0");
-    for (int i = 0; i < getSizeX(); i++) {
-      for (int j = 0; j < getSizeY(); j++) {
-        numbers[i][j] = i * getSizeX() + j;
-        items[i * getSizeX() + j] = i * getSizeX() + j;
-      }
-    }
-    shuffleArray(items);
-    for (int i = 0; i < getSizeX(); i++) {
-      for (int j = 0; j < getSizeY(); j++) {
-        numbers[i][j] = items[i * sizeX + j];
-      }
-    }
-
-    gr.removeAllViews();
-
-    Point size = new Point();
-    getWindowManager().getDefaultDisplay().getSize(size);
-    int screenWidth = size.x;
-    int screenHeight = size.y;
-
-    int halfScreenWidth = (int) (screenWidth * 0.5f);//-15
-    int quarterScreenWidth;//-15
-    quarterScreenWidth = (int) (screenWidth / getSizeX()) - (int) (getSizeX());
-
-    TableLayout tl = (TableLayout) findViewById(R.id.TableLayout1);
-    screenHeight = screenHeight - tl.getHeight();
-    int quarterScreenHeigth = (int) (screenHeight / getSizeX()) - (int) (getSizeX());
-
-    GridLayout gridLayout = gr;
-    gridLayout.setColumnCount(getSizeX());
-    gridLayout.setRowCount(getSizeX());
-
-    try {
-      int row = 0;
-      int col = 0;
-      for (int i = 0; i < items.length; i++) {
-        Log.d("item ", String.valueOf(i));
-
-        Spec rowPlace = GridLayout.spec(row);
-        Spec colPlace = GridLayout.spec(col++);
-        ButtonPyatnashka b = new ButtonPyatnashka(this);
-
-        // b.setBackgroundResource(R.drawable.button_blue);
-        GridLayout.LayoutParams place = new GridLayout.LayoutParams(rowPlace, colPlace);
-        place.width = quarterScreenWidth - 7;
-        place.height = quarterScreenWidth - 6;
-        place.setMargins(3, 3, 3, 3);
-        b.setLayoutParams(place);
-        // b.setBackgroundColor(Color.RED);
-        //b.setText(String.valueOf(items[i]));
-        b.number = items[i];
-        switch (theme) {
-          case 0: {
-            b.setBackgroundResource(R.drawable.button_blue);
-            b.setText(String.valueOf(b.number));
-            break;
-          }
-          case 1: {
-            b.setBackgroundResource(R.drawable.button_green);
-            b.setText(String.valueOf(b.number));
-            break;
-          }
-          case 2: {
-            buttonImage(b);
-            break;
-          }
-          default: {
-            b.setBackgroundResource(R.drawable.button_blue);
-            b.setText(String.valueOf(b.number));
-            break;
-          }
-        }
-        //b.setShadowLayer(10f, 5f, -5f, R.color.TransparentGrey);
-        b.setOnClickListener(new classBut(b));
-
-        if (items[i] == 0) {
-          b.setVisibility(Button.INVISIBLE);
-          butNil = b;
-        }
-        gridLayout.addView(b, place);
-        if ((i + 1) % getSizeX() == 0) {
-          row++;
-          col = 0;
-          Log.d("perenos", "true");
-        }
-      }
-    } catch (Exception e) {
-      //Log.e("Errror mother fucker", e.toString());
-    }
-
-    chronometer = (Chronometer) findViewById(R.id.chronometer2);
-    chronometer.setBase(SystemClock.elapsedRealtime());
-    chronometer.start();
-  }
 
   private void buttonImage(ButtonPyatnashka b) {
     switch (b.number) {
@@ -583,9 +491,17 @@ public class GameActivity extends BaseActivity<GamePresenter> implements GameVie
     }
   }
 
+  @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    //getMenuInflater().inflate(R.menu.main, menu);
+    menu.add(0, 1, 0, "Menu 1");
+    menu.add(0, 2, 0, "Menu 2");
+    menu.add(0, 3, 0, "Menu 3");
+  }
+
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
-    return true;
+    return super.onCreateOptionsMenu(menu);
   }
 
   @TargetApi(Build.VERSION_CODES.HONEYCOMB) @Override public void onConfigurationChanged(Configuration newConfig) {
